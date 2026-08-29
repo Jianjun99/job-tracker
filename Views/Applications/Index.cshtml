@@ -1,0 +1,97 @@
+﻿@model IEnumerable<JobTracker.Models.JobApplication>
+@using JobTracker.Models
+@{
+    ViewData["Title"] = "Applications";
+}
+
+<h1 class="mb-3">Applications</h1>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input type="text" name="search" value="@ViewData["Search"]" class="form-control"
+               placeholder="Search title, company, or skill..." />
+    </div>
+    <div class="col-md-3">
+        <select name="status" class="form-select" asp-items="Html.GetEnumSelectList<ApplicationStatus>()">
+            <option value="">All statuses</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select name="track" class="form-select">
+            <option value="">All tracks</option>
+            <option value="fullstack" selected="@(ViewData["TrackFilter"] as string == "fullstack")">Full-Stack</option>
+            <option value="embedded" selected="@(ViewData["TrackFilter"] as string == "embedded")">Embedded</option>
+        </select>
+    </div>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-outline-primary">Filter</button>
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">+ Add Application</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Score</th>
+                <th>Title</th>
+                <th>Company</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Applied</th>
+                <th>Follow up</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><span class="badge bg-success">@item.MatchScore</span></td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Url))
+                        {
+                            <a href="@item.Url" target="_blank" rel="noopener">@item.Title</a>
+                        }
+                        else
+                        {
+                            @item.Title
+                        }
+                        @if (!string.IsNullOrEmpty(item.MatchedSkills))
+                        {
+                            <br /><small class="text-muted">@item.MatchedSkills</small>
+                        }
+                    </td>
+                    <td>@item.Company</td>
+                    <td><small>@item.Location</small></td>
+                    <td>
+                        <form asp-action="QuickStatus" asp-route-id="@item.Id" method="post" class="d-flex gap-1">
+                            @Html.AntiForgeryToken()
+                            <select name="status" class="form-select form-select-sm status-badge status-@item.Status"
+                                    onchange="this.form.submit()">
+                                @foreach (var s in Enum.GetValues<ApplicationStatus>())
+                                {
+                                    <option value="@s" selected="@(s == item.Status)">@s</option>
+                                }
+                            </select>
+                        </form>
+                    </td>
+                    <td><small>@item.AppliedDate?.ToString("yyyy-MM-dd")</small></td>
+                    <td><small>@item.FollowUpDate?.ToString("yyyy-MM-dd")</small></td>
+                    <td class="text-nowrap">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No applications match. Clear the filters or add one.</div>
+}

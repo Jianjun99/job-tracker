@@ -1,0 +1,76 @@
+﻿@model JobTracker.Models.JobApplication
+@using JobTracker.Models
+@* Shared form fields for Create and Edit. *@
+
+<div class="mb-3">
+    <label asp-for="Title" class="form-label"></label>
+    <input asp-for="Title" class="form-control" />
+    <span asp-validation-for="Title" class="text-danger"></span>
+</div>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="Company" class="form-label"></label>
+        <input asp-for="Company" class="form-control" />
+        <span asp-validation-for="Company" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="Location" class="form-label"></label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="Url" class="form-label"></label>
+        <input asp-for="Url" class="form-control" placeholder="https://..." />
+        <span asp-validation-for="Url" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="Salary" class="form-label"></label>
+        <input asp-for="Salary" class="form-control" />
+        <span asp-validation-for="Salary" class="text-danger"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" class="form-select"
+                asp-items="Html.GetEnumSelectList<ApplicationStatus>()"></select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label asp-for="Track" class="form-label"></label>
+        <select asp-for="Track" class="form-select">
+            <option value=""></option>
+            <option value="fullstack">Full-Stack</option>
+            <option value="embedded">Embedded</option>
+        </select>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label asp-for="MatchScore" class="form-label"></label>
+        <input asp-for="MatchScore" class="form-control" type="number" />
+        <span asp-validation-for="MatchScore" class="text-danger"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="AppliedDate" class="form-label"></label>
+        <input asp-for="AppliedDate" class="form-control" type="date" />
+        <span asp-validation-for="AppliedDate" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="FollowUpDate" class="form-label"></label>
+        <input asp-for="FollowUpDate" class="form-control" type="date" />
+        <span asp-validation-for="FollowUpDate" class="text-danger"></span>
+    </div>
+</div>
+<div class="mb-3">
+    <label asp-for="MatchedSkills" class="form-label"></label>
+    <input asp-for="MatchedSkills" class="form-control" placeholder="e.g. c#(3), sql server(2)" />
+    <span asp-validation-for="MatchedSkills" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Notes" class="form-label"></label>
+    <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+    <span asp-validation-for="Notes" class="text-danger"></span>
+</div>
