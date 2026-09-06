@@ -6,6 +6,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+// SQLite cannot create missing directories itself, so ensure the folder in
+// the connection string exists (e.g. /home/data on Azure App Service or
+// /app/data in Docker). No-op on Windows dev machines.
+var dataSource = connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries)
+    .Select(p => p.Trim())
+    .FirstOrDefault(p => p.StartsWith("Data Source=", StringComparison.OrdinalIgnoreCase))
+    ?["Data Source=".Length..];
+if (!string.IsNullOrWhiteSpace(dataSource))
+{
+    var dbDirectory = Path.GetDirectoryName(Path.GetFullPath(dataSource));
+    if (!string.IsNullOrEmpty(dbDirectory))
+    {
+        Directory.CreateDirectory(dbDirectory);
+    }
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
