@@ -7,9 +7,6 @@ app.db
 app.db-shm
 app.db-wal
 
-## Frontend libraries restored at build
-wwwroot/lib/
-
 ## IDE
 .vs/
 .vscode/

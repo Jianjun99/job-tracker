@@ -16,6 +16,14 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+// Apply EF Core migrations on startup so a fresh database (new container
+// volume or first deploy) is created automatically.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
