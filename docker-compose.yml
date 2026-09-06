@@ -1,0 +1,10 @@
+services:
+  jobtracker:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - jobtracker-data:/app/data
+
+volumes:
+  jobtracker-data:

@@ -30,11 +30,23 @@ Live demo: _URL added after Azure App Service deployment_
 Requires the .NET 8 SDK.
 
 ```bash
-dotnet ef database update   # create the local SQLite database
 dotnet run
 ```
 
-Then open https://localhost:5001 and register an account.
+Then open http://localhost:5000 and register an account. Migrations are
+applied automatically at startup, so the database is created on first run.
+
+## Run with Docker
+
+Requires Docker (Desktop). The SQLite database is stored in a named volume
+so data survives container restarts.
+
+```bash
+docker compose up --build
+```
+
+Then open http://localhost:8080. To stop: `Ctrl+C`. To reset the data:
+`docker compose down -v`.
 
 ## Roadmap
 
