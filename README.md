@@ -3,7 +3,12 @@
 An ASP.NET Core 8 MVC web app for managing a job search end to end — the
 frontend of a personal pipeline: **Python scraper → SQLite → this tracker**.
 
-Live demo: _URL added after Azure App Service deployment_
+**Live demo:** https://jobtracker-test-ewcgexgdebcdb0cd.westus3-01.azurewebsites.net
+
+Deployed on Azure App Service (Linux, .NET 8) with GitHub Actions CI/CD —
+every push to `main` builds and deploys automatically. Register a free
+account to explore; data is stored in SQLite under App Service persistent
+storage.
 
 ## What it does
 
